@@ -224,8 +224,7 @@ footer{padding:2rem 0;border-top:1px solid var(--line);text-align:center;color:v
  <h2 class="rv">Projects</h2>
  <p class="lead rv">Click a project to see the question, tools, and findings.</p>
  <div style="margin-top:2rem" id="projList"></div>
- <p class="note">Replace the placeholder text in the <code>projects</code> array in the script at the bottom of this file with your real projects.</p>
-</div></section>
+ </div></section>
 
 <section id="cases"><div class="wrap">
  <h2 class="rv">Case studies</h2>
@@ -265,34 +264,35 @@ footer{padding:2rem 0;border-top:1px solid var(--line);text-align:center;color:v
 
 <script>
 // ---- Edit your projects here ----
-const projects=[1,2,3].map(n=>({
- title:'Project '+n+': add your title',
- sub:'SQL analysis',
- overview:'Introduce the dataset and what the project investigates.',
- objective:'Describe the business question you wanted to answer.',
- tools:'List the database and tools you actually used.',
- activities:['Examined the dataset and its structure','Used SQL queries to investigate relevant information','Identified patterns and summarized findings'],
- findings:'Add the real insights from your analysis.',
- outcome:'Explain how the findings could support decisions.',
- project:'#',github:'https://github.com/vignesh-G07'
-}));
+const projects=[{
+ title:"Retail Sales Analysis",
+ sub:"SQL \u00b7 MySQL \u00b7 Sample dataset",
+ overview:"Analysis of 1,200 retail orders (Jan to Dec 2025) covering sales, profit, categories, regions and discounts. The dataset is a synthetic practice dataset.",
+ objective:"Find which products and regions drive revenue, and where profit is being lost.",
+ tools:"SQL (MySQL), CSV dataset generated with Python.",
+ activities:["Imported the dataset into a MySQL table","Wrote GROUP BY, CTE and window-function queries","Compared category margins, regions, seasonality and discount levels"],
+ findings:"Q4 brings about 42% of sales. Technology is 56% of sales at an 11.9% margin, while Furniture earns only 2.5%. Orders with a 20% discount run at a negative margin (-2.3%).",
+ outcome:"Recommendations: cap discounts at 10%, review Furniture pricing, plan inventory for Q4 and test a campaign in the East region.",
+ project:"retail-sales-analysis.html",data:"orders.csv",github:"https://github.com/vignesh-G07"
+}];
 const list=document.getElementById('projList');
 projects.forEach((p,i)=>{
  const d=document.createElement('article');d.className='proj rv';
  d.innerHTML=`<button aria-expanded="false" aria-controls="pb${i}"><span><h3>${p.title}</h3><small>${p.sub}</small></span><span class="plus" aria-hidden="true">+</span></button>
  <div class="body" id="pb${i}"><div><div class="in">
- <div><h4>Overview</h4><p class="ph">${p.overview}</p></div>
- <div><h4>Objective</h4><p class="ph">${p.objective}</p></div>
- <div><h4>Tools used</h4><p class="ph">${p.tools}</p></div>
+ <div><h4>Overview</h4><p>${p.overview}</p></div>
+ <div><h4>Objective</h4><p>${p.objective}</p></div>
+ <div><h4>Tools used</h4><p>${p.tools}</p></div>
  <div><h4>Key activities</h4><ul>${p.activities.map(a=>'<li>'+a+'</li>').join('')}</ul></div>
- <div><h4>Key findings</h4><p class="ph">${p.findings}</p></div>
- <div><h4>Outcome</h4><p class="ph">${p.outcome}</p></div>
- <div class="links2"><a href="${p.project}">Project link</a><a href="${p.github}" target="_blank" rel="noopener">GitHub repository</a></div>
+ <div><h4>Key findings</h4><p>${p.findings}</p></div>
+ <div><h4>Outcome</h4><p>${p.outcome}</p></div>
+ <div class="links2"><a href="${p.project}">View project</a><a href="${p.data}" download>Download dataset</a><a href="${p.github}" target="_blank" rel="noopener">GitHub</a></div>
  </div></div></div>`;
  const b=d.querySelector('button');
  b.onclick=()=>{const o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);d.querySelector('.plus').textContent='+'};
  list.appendChild(d);
 });
+const f0=list.querySelector(".proj");f0.classList.add("open");f0.querySelector("button").setAttribute("aria-expanded","true");
 
 // ---- Theme ----
 const root=document.documentElement,tbtn=document.getElementById('theme');

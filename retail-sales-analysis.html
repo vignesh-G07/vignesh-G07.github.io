@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Retail Sales Analysis | Vignesh</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Sora:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#12112b;--bg2:#1a1940;--card:#211f4d;--line:#34316b;--text:#eceaff;--mute:#a9a6d6;--a:#ff7a59;--b:#7cf0d0;--neg:#ff5d73;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f5ff;--bg2:#ecebfb;--card:#fff;--line:#d9d6f3;--text:#1b1946;--mute:#5b5890;--a:#e8532f;--b:#0d8f78}}
+:root[data-theme="dark"]{--bg:#12112b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:400 1rem/1.65 'DM Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Sora',system-ui,sans-serif;line-height:1.15;letter-spacing:-.02em}
+.wrap{width:min(1080px,92%);margin:auto;padding:3rem 0}
+.pill{display:inline-block;padding:.35rem .9rem;border:1px solid var(--line);border-radius:999px;color:var(--mute);font-size:.85rem}
+h1{font-size:clamp(2rem,5vw,3.4rem);margin:1rem 0 .6rem}h1 span{color:var(--a)}
+.lead{color:var(--mute);max-width:64ch}
+h2{font-size:1.5rem;margin:3rem 0 1rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-top:2rem}
+.k{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.2rem}
+.k small{color:var(--mute)}.k b{display:block;font:800 1.9rem 'Sora',sans-serif;color:var(--b)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.2rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1.4rem}
+.card h3{font-size:1.05rem;margin-bottom:1rem}
+.row{display:grid;grid-template-columns:110px 1fr 70px;gap:.7rem;align-items:center;margin:.55rem 0;font-size:.92rem}
+.t{background:var(--bg2);border-radius:99px;height:12px;overflow:hidden}
+.t i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--a),var(--b));width:0;transition:width 1s}
+.t i.n{background:var(--neg)}
+.row em{font-style:normal;color:var(--mute);text-align:right}
+.cols{display:flex;align-items:flex-end;gap:6px;height:190px;margin-top:.5rem}
+.cols div{flex:1;text-align:center;font-size:.72rem;color:var(--mute);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.cols i{display:block;border-radius:8px 8px 3px 3px;background:var(--b);height:0;transition:height 1s;margin-bottom:4px}
+.cols i.h{background:var(--a)}
+.ins{list-style:none}
+.ins li{padding:1rem 0 1rem 3rem;border-bottom:1px solid var(--line);position:relative}
+.ins li::before{content:counter(n);counter-increment:n;position:absolute;left:0;top:.9rem;width:2rem;height:2rem;border-radius:50%;background:var(--a);color:#14112e;font-weight:700;display:grid;place-items:center}
+.ins{counter-reset:n}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:1rem;overflow-x:auto;font:500 .85rem/1.7 ui-monospace,Consolas,monospace;margin:.5rem 0 1.2rem}
+.kw{color:var(--a)}.cm{color:var(--mute)}
+.note{margin-top:3rem;font-size:.9rem;color:var(--mute);border-top:1px solid var(--line);padding-top:1.2rem}
+a{color:var(--b)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <a href="./" style="font-size:.9rem">&larr; Back to portfolio</a><br><br>
+ <span class="pill">Sample dataset &middot; 1,200 orders &middot; Jan to Dec 2025</span>
+ <h1>Retail Sales <span>Analysis</span></h1>
+ <p class="lead">Which products and regions drive revenue, and where is money being lost? SQL analysis of a retail orders dataset, with findings and recommendations.</p>
+ <div class="kpis" id="kpis"></div>
+
+ <h2>Sales and profit</h2>
+ <div class="grid">
+  <div class="card"><h3>Monthly sales (&#8377; lakh)</h3><div class="cols" id="mon"></div></div>
+  <div class="card"><h3>Category: sales share and profit margin</h3><div id="cat"></div></div>
+  <div class="card"><h3>Sales by region (&#8377; lakh)</h3><div id="reg"></div></div>
+  <div class="card"><h3>Profit margin by discount level</h3><div id="disc"></div></div>
+ </div>
+
+ <h2>Key insights</h2>
+ <ol class="ins">
+  <li><b>Q4 is the peak.</b> October to December bring about 42% of yearly sales, so stock and marketing should be planned for it.</li>
+  <li><b>Technology leads, Furniture leaks.</b> Technology is 56% of sales at an 11.9% margin. Furniture is 31% of sales but earns only 2.5% margin.</li>
+  <li><b>20% discounts lose money.</b> Orders with a 20% discount run at a &minus;2.3% margin, against 14.4% with no discount.</li>
+  <li><b>South is the strongest region</b> at 34% of sales. East is weakest at 16% and has room to grow.</li>
+ </ol>
+
+ <h2>Recommendations</h2>
+ <p class="lead">Cap discounts at 10%, review Furniture pricing and supplier cost, build Q4 inventory early, and test a targeted campaign in the East region.</p>
+
+ <h2>SQL used</h2>
+ <pre><span class="cm">-- Profit margin by category</span>
+<span class="kw">SELECT</span> category, <span class="kw">SUM</span>(sales) <span class="kw">AS</span> sales,
+       <span class="kw">ROUND</span>(<span class="kw">SUM</span>(profit)*100.0/<span class="kw">SUM</span>(sales),1) <span class="kw">AS</span> margin_pct
+<span class="kw">FROM</span> orders <span class="kw">GROUP BY</span> category <span class="kw">ORDER BY</span> sales <span class="kw">DESC</span>;</pre>
+ <pre><span class="cm">-- Monthly sales with running total (window function)</span>
+<span class="kw">WITH</span> m <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> <span class="kw">MONTH</span>(order_date) <span class="kw">AS</span> mth, <span class="kw">SUM</span>(sales) <span class="kw">AS</span> sales
+  <span class="kw">FROM</span> orders <span class="kw">GROUP BY</span> <span class="kw">MONTH</span>(order_date))
+<span class="kw">SELECT</span> mth, sales, <span class="kw">SUM</span>(sales) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> mth) <span class="kw">AS</span> running_total
+<span class="kw">FROM</span> m;</pre>
+ <pre><span class="cm">-- Does discounting hurt profit?</span>
+<span class="kw">SELECT</span> discount, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> orders,
+       <span class="kw">ROUND</span>(<span class="kw">SUM</span>(profit)*100.0/<span class="kw">SUM</span>(sales),1) <span class="kw">AS</span> margin_pct
+<span class="kw">FROM</span> orders <span class="kw">GROUP BY</span> discount <span class="kw">ORDER BY</span> discount;</pre>
+
+ <p class="note"><b>About the data:</b> this is a synthetic sample dataset generated for practice, not real company data. Tools: SQL (MySQL syntax), Python for data generation. GitHub: <a href="https://github.com/vignesh-G07" target="_blank" rel="noopener">github.com/vignesh-G07</a></p>
+</div>
+<script>
+const L=v=>(v/1e5).toFixed(1),Cr=v=>'\u20B9'+(v/1e7).toFixed(2)+' Cr',Lk=v=>'\u20B9'+(v/1e5).toFixed(1)+' L';
+const D={S:24550612,P:2243045,m:9.1,aov:20459,n:1200,
+cat:{Technology:[13804728,11.9],Furniture:[7532963,2.5],Clothing:[2004006,9.6],'Office Supplies':[1208915,17.6]},
+reg:{South:8383148,West:7194295,North:5134186,East:3838983},
+mon:[1481786,1661161,1953351,1173151,1352713,1488880,1891108,1729792,1614923,3043821,3399329,3760597],
+disc:{'0%':14.4,'5%':10.6,'10%':6.9,'20%':-2.3}};
+document.getElementById('kpis').innerHTML=[['Total sales',Cr(D.S)],['Total profit',Lk(D.P)],['Profit margin',D.m+'%'],['Orders',D.n.toLocaleString('en-IN')],['Avg order value','\u20B9'+D.aov.toLocaleString('en-IN')]].map(x=>`<div class="k"><small>${x[0]}</small><b>${x[1]}</b></div>`).join('');
+const mx=Math.max(...D.mon),M=['J','F','M','A','M','J','J','A','S','O','N','D'];
+document.getElementById('mon').innerHTML=D.mon.map((v,i)=>`<div><i class="${i>8?'h':''}" data-h="${v/mx*150}"></i>${M[i]}</div>`).join('');
+const bars=(id,rows)=>document.getElementById(id).innerHTML=rows.map(r=>`<div class="row"><span>${r[0]}</span><div class="t"><i class="${r[1]<0?'n':''}" data-w="${Math.abs(r[1])}"></i></div><em>${r[2]}</em></div>`).join('');
+bars('cat',Object.entries(D.cat).map(([k,v])=>[k,v[0]/D.S*100/0.6,Math.round(v[0]/D.S*100)+'% / '+v[1]+'%']));
+const rm=Math.max(...Object.values(D.reg));
+bars('reg',Object.entries(D.reg).map(([k,v])=>[k,v/rm*100,L(v)]));
+bars('disc',Object.entries(D.disc).map(([k,v])=>[k+' off',Math.abs(v)/14.4*100,v+'%']));
+setTimeout(()=>{document.querySelectorAll('[data-w]').forEach(e=>e.style.width=e.dataset.w+'%');document.querySelectorAll('[data-h]').forEach(e=>e.style.height=e.dataset.h+'px')},200);
+</script>
+</body>
+</html>
